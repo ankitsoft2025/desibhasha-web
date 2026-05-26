@@ -23,8 +23,10 @@ $conn = get_db_connection();
 
 // Get email and refercode from form data
 $email = trim($_POST['email'] ?? '');
-$refercode = trim($_POST['refercode'] ?? '');
-
+$refercode = trim($_POST['refercode'] ?? 0);
+if ($refercode === '') {
+    $refercode = 0; // Set to 0 if empty
+}
 // Validate email
 if (empty($email)) {
     http_response_code(400);
