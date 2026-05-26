@@ -18,7 +18,7 @@ if (!$user_id) {
 }
 
 // Fetch orders for user
-$stmt = $conn->prepare('SELECT order_id, order_amount, bhasha_money, discount_amount, paid_amount, payment_type, auth_code, date_created FROM orders WHERE bhasha_user_id = ? ORDER BY date_created DESC');
+$stmt = $conn->prepare('SELECT order_id, order_amount, bhasha_money, discount_amount, paid_amount, date_created FROM orders WHERE bhasha_user_id = ? ORDER BY date_created DESC');
 $stmt->bind_param('i', $user_id);
 $stmt->execute();
 $result = $stmt->get_result();

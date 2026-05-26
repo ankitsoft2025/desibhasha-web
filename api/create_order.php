@@ -12,8 +12,6 @@ $bhasha_money_used = $input['bhasha_money_used'] ?? 0;
 $bhasha_money_available = $input['bhasha_money_available'] ?? 0;
 $discount = $input['discount'] ?? 0;
 $paid_amount = $input['paid_amount'] ?? 0;
-$payment_type = $input['payment_type'] ?? 'CC';
-$auth_code = $input['auth_code'] ?? 'DFCDCDCC';
 if (!$user_id) {    
     http_response_code(401);
     echo json_encode(['error' => 'Token Expired']);
@@ -37,8 +35,8 @@ while ($row = $result->fetch_assoc()) {
 
 // create order
 //$plan_type_id = $plan_type_ids[0];
-$stmt_insert = $conn->prepare('INSERT INTO orders (`bhasha_user_id`, `order_amount`,`bhasha_money`,`discount_amount`,`paid_amount`,`payment_type`,`auth_code`, `date_created`) VALUES (?, ?, ?, ?, ?, ?, ? , NOW())');
-$stmt_insert->bind_param('iddddss',  $user_id, $order_amount, $bhasha_money_used, $discount, $paid_amount, $payment_type, $auth_code);
+$stmt_insert = $conn->prepare('INSERT INTO orders (`bhasha_user_id`, `order_amount`,`bhasha_money`,`discount_amount`,`paid_amount`,`status`,`date_created`) VALUES (?, ?, ?, ?, ?, NULL, NOW())');
+$stmt_insert->bind_param('idddd', $user_id, $order_amount, $bhasha_money_used, $discount, $paid_amount);
 $stmt_insert->execute();
 print_r($stmt_insert->error);
 $order_id = $stmt_insert->insert_id;
