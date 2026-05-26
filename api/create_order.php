@@ -17,6 +17,17 @@ if (!$user_id) {
     echo json_encode(['error' => 'Token Expired']);
     exit;
 }
+$status_not_success = 'success';
+$stmt_open = $conn->prepare('SELECT order_id FROM orders WHERE bhasha_user_id = ? AND (status IS NULL OR status != ?) LIMIT 1');
+$stmt_open->bind_param('ss', $user_id, $status_not_success);
+$stmt_open->execute();
+$result_open = $stmt_open->get_result();
+if ($result_open->num_rows > 0) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Open order exists']);
+    exit;
+}
+$stmt_open->close();
 $stmt = $conn->prepare('SELECT plan_purchase_cart_id, plan_type_id FROM plan_purchase_cart where order_id is null and bhasha_user_id = ?');
 $stmt->bind_param('s', $user_id);
 $stmt->execute();
