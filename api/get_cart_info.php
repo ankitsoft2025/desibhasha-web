@@ -35,7 +35,7 @@ if (!$user_id) {
     JOIN plan_types pt ON pt.plan_type_id = ppc.plan_type_id
     WHERE ppc.bhasha_user_id = $user_id
       AND pt.is_active = 1
-      AND (ppc.order_id IS NULL OR o.status != 'success');";
+      AND (ppc.order_id IS NULL OR o.status IS NULL OR o.status != 'success');";
     
 $stmt = $conn->prepare($query);
 $stmt->execute();

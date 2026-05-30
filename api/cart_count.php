@@ -55,8 +55,10 @@ if (!$user_id) {
 
 
 $query="SELECT count(*) as cart_total FROM plan_purchase_cart ppc
-
-where ppc.bhasha_user_id = $user_id and ppc.order_id is null;";
+    LEFT JOIN orders o ON o.order_id = ppc.order_id
+    JOIN plan_types pt ON pt.plan_type_id = ppc.plan_type_id
+where ppc.bhasha_user_id = $user_id AND pt.is_active = 1
+      AND (ppc.order_id IS NULL OR o.status IS NULL OR o.status != 'success');";
 
 
 
